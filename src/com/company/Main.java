@@ -7,5 +7,7 @@ public class Main {
         GameController gc = new GameController();
 
 
+
+        //TODO gameloop with loopCounter. Odd numbers for one player, even numbers for the other.
     }
 }

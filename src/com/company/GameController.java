@@ -7,23 +7,35 @@ import com.sun.org.apache.xpath.internal.SourceTree;
  */
 public class GameController {
 
-    private Board b;
+    private Board brd;
     private Player pa;
     private Player pb;
-    private GUI g;
+    private GUI gui;
 
     public GameController() {
-        start();
-    }
 
-    /**
-     * Creates objects for game to work
-     */
-    public void start(){
-        b = new Board();
+        brd = new Board();
         pa = new Player();
         pb = new Player();
-        g = new GUI();
+        gui = new GUI();
     }
 
+    public void playerTurn(Player p){
+        //TODO set player position on board
+        //TODO place piece on board
+        //TODO remember checks for
+            //TODO win
+            //TODO tie
+            //TODO position taken
+            //TODO invalid input (If buttons, not needed)
+    }
+
+    public void playerNameSet(String name, boolean player){ //player is 0 or 1
+        if(player == true) {
+            pa.setName(name);
+        }
+        else if(player == false){
+            pb.setName(name);
+        }
+    }
 }
