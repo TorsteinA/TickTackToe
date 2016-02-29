@@ -15,6 +15,7 @@ public class GameController {
     public GameController() {
         gui = new GUI(this);
 
+        //
         String name = gui.getPlayerName("A");
         pa = new Player(name);
         pa.setCharacter('X');
