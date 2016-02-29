@@ -1,8 +1,9 @@
 package com.company;
 
 import javax.swing.*;
-import java.awt.event.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 /**
  * Created by torstein on 18-Feb-16.
  */
@@ -24,9 +25,8 @@ public class GUI extends JFrame implements ActionListener{
 
         playerASetup();
         playerBSetup();
-
+        // Test
         gameSetup();
-
     }
 
 
