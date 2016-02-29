@@ -18,11 +18,11 @@ public class GameController {
         //
         String name = gui.getPlayerName("A");
         pa = new Player(name);
-        pa.setCharacter('X');
+        pa.setCharacter(PlayerSign.X);
 
         name = gui.getPlayerName("B");
         pb = new Player(name);
-        pb.setCharacter('O');
+        pb.setCharacter(PlayerSign.O);
 
         brdArray = new char[9];
         fillBoard();
@@ -40,7 +40,6 @@ public class GameController {
             playerTurn(pb);
         }
 
-
         iterator++;
     }
 
@@ -52,7 +51,6 @@ public class GameController {
 
         int playerPos = gui.getPPos();
 
-        //Player A's turn
         player.setPos(playerPos);
         int posP = player.getPos();
         setChar(posP, true);
@@ -74,20 +72,17 @@ public class GameController {
     }
 
     private void setChar(int position, boolean player) { //true = player A, false = player B
-        if (position <= 0 && position >= 8) {
-            if (player) {
-                brdArray[position] = 'X';
-            } else {
-                brdArray[position] = 'O';
-            }
+        if (position > 0 || position < 8) {
+            throw new RuntimeException("Position is out of bounds: " + position);
         }
+
+        brdArray[position] = player ? PlayerSign.X : PlayerSign.O; //ternary operator
     }
 
     private char getBoardChar(int position) {
         if (position <= 0 && position >= 8) {
             return brdArray[position];
         }
-
         return 'U';
     }
 }
