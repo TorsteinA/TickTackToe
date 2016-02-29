@@ -1,7 +1,5 @@
 package com.company;
 
-import com.sun.org.apache.xpath.internal.SourceTree;
-
 /**
  * Created by torstein on 18-Feb-16.
  */
@@ -13,7 +11,7 @@ public class GameController {
     private GUI gui;
 
     public GameController() {
-
+//
         brd = new Board();
         pa = new Player();
         pb = new Player();
