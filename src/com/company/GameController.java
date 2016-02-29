@@ -5,35 +5,89 @@ package com.company;
  */
 public class GameController {
 
-    private Board brd;
     private Player pa;
     private Player pb;
     private GUI gui;
 
+    private char[] brdArray;
+    private int iterator = 0;
+
     public GameController() {
-//
-        brd = new Board();
-        pa = new Player();
-        pb = new Player();
-        gui = new GUI();
+        gui = new GUI(this);
+
+        //
+        String name = gui.getPlayerName("A");
+        pa = new Player(name);
+        pa.setCharacter('X');
+
+        name = gui.getPlayerName("B");
+        pb = new Player(name);
+        pb.setCharacter('O');
+
+        brdArray = new char[9];
+        fillBoard();
+        System.out.println("Board is made");
+
+        gui.updatePlayerTurn(pa);
     }
 
-    public void playerTurn(Player p){
+    public void guiClicked() {
+        if (iterator % 2 == 0) {
+            gui.updatePlayerTurn(pb);
+            playerTurn(pa);
+        } else {
+            gui.updatePlayerTurn(pa);
+            playerTurn(pb);
+        }
+
+
+        iterator++;
+    }
+
+    public void playerTurn(Player player) {
+
         //TODO set player position on board
         //TODO place piece on board
+
+
+        int playerPos = gui.getPPos();
+
+        //Player A's turn
+        player.setPos(playerPos);
+        int posP = player.getPos();
+        setChar(posP, true);
+        gui.setBtn(posP, player.getCharacter()); //String.valueOf(getBoardChar(posPA)) doesn't work to replace "X"
+        gui.setClicked(false);
+        System.out.println(getBoardChar(posP));
+
         //TODO remember checks for
-            //TODO win
-            //TODO tie
-            //TODO position taken
-            //TODO invalid input (If buttons, not needed)
+        //TODO win
+        //TODO tie
+        //TODO position taken
+        //TODO invalid input (If buttons, not needed)
     }
 
-    public void playerNameSet(String name, boolean player){ //player is 0 or 1
-        if(player == true) {
-            pa.setName(name);
+    private void fillBoard() {
+        for (int i = 0; i < brdArray.length; i++) {
+            brdArray[i] = ' ';
         }
-        else if(player == false){
-            pb.setName(name);
+    }
+
+    private void setChar(int position, boolean player) { //true = player A, false = player B
+        if (position <= 0 && position >= 8) {
+            if (player) {
+                brdArray[position] = 'X';
+            } else {
+                brdArray[position] = 'O';
+            }
         }
+    }
+
+    private char getBoardChar(int position) {
+        if (position <= 0 && position >= 8) {
+            return brdArray[position];
+        }
+
+        return 'U';
     }
 }
