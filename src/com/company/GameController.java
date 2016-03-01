@@ -15,7 +15,6 @@ public class GameController {
     public GameController() {
         gui = new GUI(this);
 
-        //
         String name = gui.getPlayerName("A");
         pa = new Player(name);
         pa.setCharacter(PlayerSign.X);
@@ -24,11 +23,7 @@ public class GameController {
         pb = new Player(name);
         pb.setCharacter(PlayerSign.O);
 
-        brdArray = new char[9];
-        fillBoard();
-        System.out.println("Board is made");
 
-        gui.updatePlayerTurn(pa);
     }
 
     public void guiClicked() {
@@ -43,6 +38,14 @@ public class GameController {
         iterator++;
     }
 
+    public void start() {
+        brdArray = new char[9];
+        fillBoard();
+        System.out.println("Board is made");
+
+        gui.updatePlayerTurn(pa);
+    }
+
     public void playerTurn(Player player) {
 
         //TODO set player position on board
@@ -53,10 +56,19 @@ public class GameController {
 
         player.setPos(playerPos);
         int posP = player.getPos();
-        setChar(posP, true);
-        gui.setBtn(posP, player.getCharacter()); //String.valueOf(getBoardChar(posPA)) doesn't work to replace "X"
+
+
+        setChar(posP, player); //true always sets one player
+        setChar(posP, player);
+
+
+        gui.setBtn(posP, player.getCharacter());
         gui.setClicked(false);
-        System.out.println(getBoardChar(posP));
+        //System.out.println(getBoardChar(posP));
+
+        if (!winCheck(player)) {
+            tieCheck();
+        }
 
         //TODO remember checks for
         //TODO win
@@ -71,12 +83,11 @@ public class GameController {
         }
     }
 
-    private void setChar(int position, boolean player) { //true = player A, false = player B
-        if (position > 0 || position < 8) {
+    private void setChar(int position, Player player) { //true = player A, false = player B
+        if (position < 0 || position > 8) {
             throw new RuntimeException("Position is out of bounds: " + position);
         }
-
-        brdArray[position] = player ? PlayerSign.X : PlayerSign.O; //ternary operator
+        brdArray[position] = player.getCharacter();
     }
 
     private char getBoardChar(int position) {
@@ -84,5 +95,66 @@ public class GameController {
             return brdArray[position];
         }
         return 'U';
+    }
+
+
+    /**
+     * Checks if a player has won.
+     */
+    public boolean winCheck(Player player) {
+        if (horizontalWin(player) || verticalWin(player) || diagonalWin(player)) {
+            gui.winPrint(player);
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Checks if it's a tie.
+     */
+    public void tieCheck() {
+        if (!(new String(brdArray).contains(" "))) {
+            gui.tiePrint();
+        }
+    }
+
+    /**
+     * Checks horizontal win conditions
+     */
+    private boolean horizontalWin(Player player) {
+        if (brdArray[0] == brdArray[1] && brdArray[1] == brdArray[2] && brdArray[2] == player.getCharacter()) {
+            return true;
+        } else if (brdArray[3] == brdArray[4] && brdArray[4] == brdArray[5] && brdArray[5] == player.getCharacter()) {
+            return true;
+        } else if (brdArray[6] == brdArray[7] && brdArray[7] == brdArray[8] && brdArray[8] == player.getCharacter()) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Checks vertical win conditions
+     */
+    private boolean verticalWin(Player player) {
+        if (brdArray[0] == brdArray[3] && brdArray[3] == brdArray[6] && brdArray[6] == player.getCharacter()) {
+            return true;
+        } else if (brdArray[1] == brdArray[4] && brdArray[4] == brdArray[7] && brdArray[7] == player.getCharacter()) {
+            return true;
+        } else if (brdArray[2] == brdArray[5] && brdArray[5] == brdArray[8] && brdArray[8] == player.getCharacter()) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Checks diagonal win conditions
+     */
+    private boolean diagonalWin(Player player) {
+        if (brdArray[0] == brdArray[4] && brdArray[4] == brdArray[8] && brdArray[8] == player.getCharacter()) {
+            return true;
+        } else if (brdArray[2] == brdArray[4] && brdArray[4] == brdArray[6] && brdArray[6] == player.getCharacter()) {
+            return true;
+        }
+        return false;
     }
 }
