@@ -18,33 +18,47 @@ public class GUI extends JFrame implements ActionListener {
     private boolean btnClicked;
     private GameController gameController;
     private JLabel jLbl2;
+    private JLabel jLbl3;
 
     public GUI(GameController gameController) {
 
         this.gameController = gameController;
-        pPos = -1;
+        pPos = 4;
         System.out.println("GUI object emerged");
         JLabel jLbl1 = new JLabel("Tick Tack Toe", JLabel.CENTER);
-        jLbl2 = new JLabel("someone's turn", JLabel.CENTER);
+        jLbl1.setFont(new Font("Onyx", Font.BOLD, 54));
+
+        jLbl2 = new JLabel("Someone's turn", JLabel.CENTER);
+        jLbl2.setFont(new Font("Serif", Font.PLAIN, 24));
+
+        jLbl3 = new JLabel("Character", JLabel.CENTER);
+        jLbl3.setFont(new Font("Serif", Font.PLAIN, 24));
+
 
         for (int i = 0; i <= 8; i++) {
             buttonList.add(new JButton());
         }
         setTitle("Tick Tack Toe");
-        setSize(500, 500);
+        setSize(400, 500);
         int height = 3;
         int width = 3;
+
         JPanel jPanel = new JPanel(new GridLayout(width, height));
         add(jPanel, BorderLayout.CENTER);
+
         JPanel jp2 = new JPanel(new BorderLayout(100, 10));
         add(jp2, BorderLayout.NORTH);
+
+        JPanel jp3 = new JPanel(new BorderLayout());
+        jp2.add(jp3, BorderLayout.SOUTH);
 
         for (JButton jButton : buttonList) {
             jPanel.add(jButton);
             jButton.addActionListener(this);
         }
         jp2.add(jLbl1, BorderLayout.NORTH);
-        jp2.add(jLbl2, BorderLayout.SOUTH);
+        jp3.add(jLbl2, BorderLayout.WEST);
+        jp3.add(jLbl3, BorderLayout.EAST);
         add(btnR, BorderLayout.SOUTH);
         btnR.addActionListener(this);
         setVisible(true);
@@ -82,6 +96,7 @@ public class GUI extends JFrame implements ActionListener {
     public void setBtn(int button, char playerCharacter) {
         String character = String.valueOf(playerCharacter);
         buttonList.get(button).setText(character);
+        buttonList.get(button).setFont(new Font("Arial", Font.PLAIN, 40));
     }
 
     public String getPlayerName(String player) {
@@ -94,7 +109,8 @@ public class GUI extends JFrame implements ActionListener {
 
     public void updatePlayerTurn(Player player) {
         String name = player.getName();
-        jLbl2.setText(name + "'s turn with character: " + player.getCharacter());
+        jLbl2.setText(name + "'s turn");
+        jLbl3.setText(String.valueOf(player.getCharacter()));
     }
 
     public int winPrint(Player player) {
