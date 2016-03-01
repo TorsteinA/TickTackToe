@@ -26,6 +26,7 @@ public class GUI extends JFrame implements ActionListener {
         System.out.println("GUI object emerged");
         JLabel jLbl1 = new JLabel("Tick Tack Toe", JLabel.CENTER);
         jLbl2 = new JLabel("someone's turn", JLabel.CENTER);
+
         for (int i = 0; i <= 8; i++) {
             buttonList.add(new JButton());
         }
@@ -37,6 +38,7 @@ public class GUI extends JFrame implements ActionListener {
         add(jPanel, BorderLayout.CENTER);
         JPanel jp2 = new JPanel(new BorderLayout(100, 10));
         add(jp2, BorderLayout.NORTH);
+
         for (JButton jButton : buttonList) {
             jPanel.add(jButton);
             jButton.addActionListener(this);
@@ -63,13 +65,11 @@ public class GUI extends JFrame implements ActionListener {
         gameController.guiClicked();
 
         if (clicked == btnR) {
-            resetGame();
+            gameController.resetGame();
         }
     }
 
-    public void resetGame() {
-        gameController.start();
-
+    public void resetButtonList() {
         for (JButton jButton : buttonList) {
             jButton.setText("");
         }
@@ -94,35 +94,23 @@ public class GUI extends JFrame implements ActionListener {
 
     public void updatePlayerTurn(Player player) {
         String name = player.getName();
-        jLbl2.setText(name + "'s turn");
+        jLbl2.setText(name + "'s turn with character: " + player.getCharacter());
     }
 
-    public void winPrint(Player player) {
-        //JOptionPane.showMessageDialog(this, player.getName() + " wins the game!");
+    public int winPrint(Player player) {
         int reply = JOptionPane.showConfirmDialog(this, player.getName() + " wins the game!\nDo you want to reset the game?", "Winner!", JOptionPane.YES_NO_OPTION);
 
-        if (reply == JOptionPane.YES_OPTION) {
-            resetGame();
-        } else {
-            exitGame();
-        }
+        return reply;
 
     }
 
-    public void tiePrint() {
+    public int tiePrint() {
         int reply = JOptionPane.showConfirmDialog(this, "There's a tie!\n" +
                 "Do you want to reset the game?", "Tie", JOptionPane.YES_NO_OPTION);
-
-        if (reply == JOptionPane.YES_OPTION) {
-            resetGame();
-        } else {
-            exitGame();
-        }
+        return reply;
     }
 
-    public void exitGame() {
+    public void showExit() {
         JOptionPane.showMessageDialog(this, "Goodbye!");
-        System.exit(0);
-
     }
 }

@@ -1,5 +1,7 @@
 package com.company;
 
+import javax.swing.*;
+
 /**
  * Created by torstein on 18-Feb-16.
  */
@@ -15,15 +17,15 @@ public class GameController {
     public GameController() {
         gui = new GUI(this);
 
+        //Player A's creation
         String name = gui.getPlayerName("A");
         pa = new Player(name);
         pa.setCharacter(PlayerSign.X);
 
+        //Player B's creation
         name = gui.getPlayerName("B");
         pb = new Player(name);
         pb.setCharacter(PlayerSign.O);
-
-
     }
 
     public void guiClicked() {
@@ -47,8 +49,17 @@ public class GameController {
         brdArray = new char[9];
         fillBoard();
         System.out.println("Board is made");
-
         gui.updatePlayerTurn(pa);
+    }
+
+    public void resetGame() {
+        start();
+        gui.resetButtonList();
+    }
+
+    private void exitGame() {
+        gui.showExit();
+        System.exit(0);
     }
 
     public boolean playerTurn(Player player) {
@@ -83,19 +94,17 @@ public class GameController {
         brdArray[position] = player.getCharacter();
     }
 
-    private char getBoardChar(int position) {
-        if (position <= 0 && position >= 8) {
-            return brdArray[position];
-        }
-        return 'U';
-    }
-
     /**
      * Checks if a player has won.
      */
     public boolean winCheck(Player player) {
         if (horizontalWin(player) || verticalWin(player) || diagonalWin(player)) {
-            gui.winPrint(player);
+
+            if (gui.winPrint(player) == JOptionPane.YES_OPTION) {
+                resetGame();
+            } else {
+                exitGame();
+            }
             return true;
         }
         return false;
@@ -106,7 +115,11 @@ public class GameController {
      */
     public void tieCheck() {
         if (!(new String(brdArray).contains(" "))) {
-            gui.tiePrint();
+            if (gui.tiePrint() == JOptionPane.YES_OPTION) {
+                resetGame();
+            } else {
+                exitGame();
+            }
         }
     }
 
