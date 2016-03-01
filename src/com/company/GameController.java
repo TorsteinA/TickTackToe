@@ -28,13 +28,18 @@ public class GameController {
 
     public void guiClicked() {
         if (iterator % 2 == 0) {
-            gui.updatePlayerTurn(pb);
-            playerTurn(pa);
+            if (playerTurn(pa)) {
+                gui.updatePlayerTurn(pb);
+            } else {
+                iterator++;
+            }
         } else {
-            gui.updatePlayerTurn(pa);
-            playerTurn(pb);
+            if (playerTurn(pb)) {
+                gui.updatePlayerTurn(pa);
+            } else {
+                iterator++;
+            }
         }
-
         iterator++;
     }
 
@@ -46,35 +51,23 @@ public class GameController {
         gui.updatePlayerTurn(pa);
     }
 
-    public void playerTurn(Player player) {
-
-        //TODO set player position on board
-        //TODO place piece on board
-
+    public boolean playerTurn(Player player) {
 
         int playerPos = gui.getPPos();
-
-        player.setPos(playerPos);
-        int posP = player.getPos();
-
-
-        setChar(posP, player); //true always sets one player
-        setChar(posP, player);
-
-
-        gui.setBtn(posP, player.getCharacter());
         gui.setClicked(false);
-        //System.out.println(getBoardChar(posP));
 
-        if (!winCheck(player)) {
-            tieCheck();
+        if (brdArray[playerPos] == ' ') {
+            player.setPos(playerPos);
+            int posP = player.getPos();
+            setChar(posP, player);
+            gui.setBtn(posP, player.getCharacter());
+            if (!winCheck(player)) {
+                tieCheck();
+            }
+            return true;
+        } else {
+            return false;
         }
-
-        //TODO remember checks for
-        //TODO win
-        //TODO tie
-        //TODO position taken
-        //TODO invalid input (If buttons, not needed)
     }
 
     private void fillBoard() {
@@ -96,7 +89,6 @@ public class GameController {
         }
         return 'U';
     }
-
 
     /**
      * Checks if a player has won.

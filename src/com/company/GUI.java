@@ -65,13 +65,9 @@ public class GUI extends JFrame implements ActionListener {
         if (clicked == btnR) {
             resetGame();
         }
-
-
     }
 
     public void resetGame() {
-        JOptionPane.showMessageDialog(this, "Game reset");
-
         gameController.start();
 
         for (JButton jButton : buttonList) {
