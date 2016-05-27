@@ -1,6 +1,7 @@
 package com.company;
 
 import javax.swing.*;
+import java.util.Random;
 
 /**
  * Created by torstein on 18-Feb-16.
@@ -45,16 +46,26 @@ public class GameController {
         iterator++;
     }
 
-    public void start() {
+    public void start(int reset) {
         brdArray = new char[9];
         fillBoard();
         System.out.println("Board is made");
-        gui.updatePlayerTurn(pa);
+        if (reset == 0) {
+            gui.updatePlayerTurn(pa);
+        } else if (reset == 1) {
+            Random random = new Random();
+            if (random.nextBoolean()) {
+                gui.updatePlayerTurn(pa);
+            } else {
+                gui.updatePlayerTurn(pb);
+            }
+        }
     }
 
     public void resetGame() {
-        start();
+        start(1);
         gui.resetButtonList();
+
     }
 
     private void exitGame() {

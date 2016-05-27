@@ -17,8 +17,7 @@ public class GUI extends JFrame implements ActionListener {
     private int pPos;
     private boolean btnClicked;
     private GameController gameController;
-    private JLabel jLbl2;
-    private JLabel jLbl3;
+    private JLabel jLbl2, jLbl3;
 
     public GUI(GameController gameController) {
 
